@@ -16,6 +16,9 @@ namespace Learners_Reader.Utilities
     {
         public static void Log(string tag, string message)
         {
+            if (message == null)
+                message = "null";
+
             Android.Util.Log.Debug(tag, message);
         }
 

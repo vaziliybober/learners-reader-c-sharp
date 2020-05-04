@@ -18,7 +18,7 @@ namespace Learners_Reader.Utilities
     public class FilePicker
     {
         private FileData fileData = null;
-        private Context context;
+        private readonly Context context;
 
         // A class to store event arguments
         public class FinishedEventArgs : EventArgs

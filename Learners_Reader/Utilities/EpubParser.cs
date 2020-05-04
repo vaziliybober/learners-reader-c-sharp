@@ -16,7 +16,8 @@ namespace Learners_Reader.Utilities
     public class EpubParser
     {
         public string Path { get; }
-        public string RootFilePath { get; private set; }
+        private string RootFilePath { get; set; }
+        public string RootFolderPath { get; private set; }
         public string Title { get; private set; }
         public string Author { get; private set; }
         public string Language { get; private set; }
@@ -41,6 +42,7 @@ namespace Learners_Reader.Utilities
             doc.Load(containerPath);
 
             this.RootFilePath = System.IO.Path.Combine(this.Path, doc.GetElementsByTagName("rootfile")[0].Attributes.GetNamedItem("full-path").Value);
+            this.RootFolderPath = System.IO.Path.GetDirectoryName(this.RootFilePath);
         }
 
         private void ParseRootFile()
@@ -64,7 +66,7 @@ namespace Learners_Reader.Utilities
                 string sectionId = itemRef.Attributes["idref"].Value;
                 
                 string relativeSectionPath = manifestNode.SelectSingleNode($"d:item[@id='{sectionId}']", nsManager).Attributes["href"].Value;
-                string sectionPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.RootFilePath), relativeSectionPath);
+                string sectionPath = System.IO.Path.Combine(this.RootFolderPath, relativeSectionPath);
                 this.PathsToSectionsInReadingOrder.Add(sectionPath);
             }
         }

@@ -12,6 +12,7 @@ using Android;
 using Android.Content.PM;
 using Android.Support.V4.App;
 using System.IO;
+using Android.Content;
 
 namespace Learners_Reader
 {
@@ -39,6 +40,8 @@ namespace Learners_Reader
             ConfigureLibraryListView();
             ConfigureFilePicker();
             ConfigureAddBookButton();
+
+            Test();
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -68,17 +71,24 @@ namespace Learners_Reader
             libraryListView = FindViewById<ListView>(Resource.Id.libraryListView);
             adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, library.GetAllBookNames());
             libraryListView.Adapter = adapter;
+
+            libraryListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
+            {
+                string selectedBookTitle = library.GetAllBookNames()[args.Position];
+                GlobalData.CurrentBook = library.GetBook(selectedBookTitle);
+
+                Intent nextActivityIntent = new Intent(this, typeof(BookInfoActivity));
+                StartActivity(nextActivityIntent);
+            };
         }
 
         private void ConfigureAddBookButton()
         {
             addBookButton = FindViewById<Button>(Resource.Id.addBookButton);
-            addBookButton.Click += OnAddBookButtonClicked;
-        }
-
-        private void OnAddBookButtonClicked(object sender, EventArgs e)
-        {
-            filePicker.Start();
+            addBookButton.Click += delegate (object sender, EventArgs e)
+            {
+                filePicker.Start();
+            };
         }
 
         private void ConfigureFilePicker()
@@ -116,6 +126,14 @@ namespace Learners_Reader
                 }
 
             };
+        }
+
+        private void Test()
+        {
+            GlobalData.CurrentBook = library.GetBook("A game of thrones");
+
+            Intent nextActivityIntent = new Intent(this, typeof(BookActivity));
+            StartActivity(nextActivityIntent);
         }
     }
 }

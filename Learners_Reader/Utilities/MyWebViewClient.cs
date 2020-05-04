@@ -5,18 +5,17 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Webkit;
 using Android.Widget;
-using Learners_Reader.Model;
 
 namespace Learners_Reader.Utilities
 {
-    public static class GlobalData
+    public class MyWebViewClient : WebViewClient
     {
-        public static string RootFolder { get; set; }
 
-        public static Book CurrentBook { get; set; }
     }
 }

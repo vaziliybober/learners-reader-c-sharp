@@ -33,20 +33,5 @@ namespace Learners_Reader.Utilities
 
             return base.OnTouchEvent(e);
         }
-
-       /* private void MoveToNextPage()
-        {
-            Logger.Log("next");
-        }
-
-        private void MoveToPrevPage()
-        {
-            Logger.Log("prev");
-        }
-
-        private void SelectWord()
-        {
-            Logger.Log("word");
-        }*/
     }
 }

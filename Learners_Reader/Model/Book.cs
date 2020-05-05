@@ -54,8 +54,8 @@ namespace Learners_Reader.Model
         {
             string js = @"<script>
       var startX, startY, startTime;
-var distXThreshold = 100;
-var distYThreshold = 50;
+var distXThreshold = 50;
+var distYThreshold = 100;
 var timeThreshold = 200;
 
 window.onload = function () {
@@ -65,31 +65,37 @@ window.onload = function () {
   d.style.columnFill = 'auto';
   d.style.columnGap = 0;
   d.style.margin = 0;
-  console.log('<number of pages>:' + d.scrollWidth/d.clientWidth);
+  var pageCount = Math.round(d.scrollWidth / d.clientWidth);
+  console.log('<number of pages>:' + pageCount);
+
+  var currentPageIndex = 0;
 
   function onSwipeLeft() {
-    window.scrollBy({
-      top: 0,
-      left: d.clientWidth,
-      behavior: 'smooth'
-    });
+    currentPageIndex++;
+    console.log(currentPageIndex);
+    if (currentPageIndex == pageCount) {
+      console.log('<event>:last_page_turn');
+      currentPageIndex = 0;
+    }
+    else {
+      window.scrollBy(d.clientWidth, 200);
+    }
   }
 
   function onSwipeRight() {
-    window.scrollBy({
-      top: 0,
-      left: -d.clientWidth,
-      behavior: 'smooth'
-    });
+    currentPageIndex--;
+    console.log(currentPageIndex);
+    window.scrollBy(-d.clientWidth, 200);
   }
 
-  d.addEventListener('touchstart', function (e) {
+
+   d.addEventListener('touchstart', function (e) {
     var touchObj = e.changedTouches[0];
     startX = touchObj.pageX;
     startY = touchObj.pageY;
     startTime = new Date().getTime()
     e.preventDefault();
-  }, false);
+  }, {passive: false});
   
   d.addEventListener('touchend', function (e) {
     var touchObj = e.changedTouches[0];
@@ -103,17 +109,18 @@ window.onload = function () {
     }
 
     e.preventDefault();
-  }, false);
+  }, {passive: false});
 
   d.addEventListener('touchmove', function(e) {
     e.preventDefault();
-  }, false);
+  }, {passive: false});
 
 }
       </script>";
 
             return section.Replace("</body>", js + "</body>");
         }
+
         public string ReadSection(int i)
         {
             if (i < 0 || i >= this.PathsToSectionsInReadingOrder.Count)

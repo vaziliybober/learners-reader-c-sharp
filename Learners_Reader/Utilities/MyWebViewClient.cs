@@ -16,6 +16,6 @@ namespace Learners_Reader.Utilities
 {
     public class MyWebViewClient : WebViewClient
     {
-
+        
     }
 }

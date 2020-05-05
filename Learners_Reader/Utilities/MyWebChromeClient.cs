@@ -15,12 +15,19 @@ namespace Learners_Reader.Utilities
 {
     public class MyWebChromeClient : WebChromeClient
     {
+        private readonly MyWebView webView;
+
+        public MyWebChromeClient(MyWebView webView) : base()
+        {
+            this.webView = webView;
+        }
+
         public override bool OnConsoleMessage(ConsoleMessage consoleMessage)
         {
             if (consoleMessage.Message().StartsWith("<number of pages>:")) {
-                //int nPages = int.Parse(consoleMessage.Message().Split(':')[1]);
-                //Logger.Log("" + nPages);
-                Logger.Log(consoleMessage.Message());
+                int pageCount = int.Parse(consoleMessage.Message().Split(':')[1]);
+                webView.PageCount = pageCount;
+                Logger.Log(webView.PageCount + "");
             }
 
             return base.OnConsoleMessage(consoleMessage);

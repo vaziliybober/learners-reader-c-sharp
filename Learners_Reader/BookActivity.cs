@@ -18,7 +18,7 @@ namespace Learners_Reader
     [Activity(Label = "BookActivity")]
     public class BookActivity : Activity
     {
-        WebView webView;
+        MyWebView webView;
         Button nextChapterButton, prevChapterButton;
 
         Book book;
@@ -37,12 +37,11 @@ namespace Learners_Reader
 
         private void ConfigureWebView()
         {
-            webView = FindViewById<WebView>(Resource.Id.webView);
-            webView.SetWebChromeClient(new WebChromeClient());
+            webView = FindViewById<MyWebView>(Resource.Id.webView);
             webView.Settings.JavaScriptCanOpenWindowsAutomatically = true;
             webView.Settings.JavaScriptEnabled = true;
             webView.SetWebViewClient(new MyWebViewClient());
-            webView.SetWebChromeClient(new MyWebChromeClient());
+            webView.SetWebChromeClient(new MyWebChromeClient(webView));
             webView.HorizontalScrollBarEnabled = false;
             webView.VerticalScrollBarEnabled = false;
 

@@ -50,28 +50,77 @@ namespace Learners_Reader.Model
             this.PathsToSectionsInReadingOrder = parser.PathsToSectionsInReadingOrder;
         }
 
-        private string ModifySection(string section)
+        private string InjectJavascriptIntoSection(string section)
         {
-            string js = @"<script>window.onload = function () {
-      var d = document.getElementsByTagName('body')[0];
-      d.style.height = window.innerHeight + 'px';
-      d.style.webkitColumnCount = 1;
-      d.style.columnFill = 'auto';
-      d.style.columnGap = 0;
-      d.style.margin = 0;
-      console.log(""<number of pages>:"" + d.scrollWidth/d.clientWidth);
-    }</script>";
+            string js = @"<script>
+      var startX, startY, startTime;
+var distXThreshold = 100;
+var distYThreshold = 50;
+var timeThreshold = 200;
+
+window.onload = function () {
+  var d = document.getElementsByTagName('body')[0];
+  d.style.height = window.innerHeight + 'px';
+  d.style.webkitColumnCount = 1;
+  d.style.columnFill = 'auto';
+  d.style.columnGap = 0;
+  d.style.margin = 0;
+  console.log('<number of pages>:' + d.scrollWidth/d.clientWidth);
+
+  function onSwipeLeft() {
+    window.scrollBy({
+      top: 0,
+      left: d.clientWidth,
+      behavior: 'smooth'
+    });
+  }
+
+  function onSwipeRight() {
+    window.scrollBy({
+      top: 0,
+      left: -d.clientWidth,
+      behavior: 'smooth'
+    });
+  }
+
+  d.addEventListener('touchstart', function (e) {
+    var touchObj = e.changedTouches[0];
+    startX = touchObj.pageX;
+    startY = touchObj.pageY;
+    startTime = new Date().getTime()
+    e.preventDefault();
+  }, false);
+  
+  d.addEventListener('touchend', function (e) {
+    var touchObj = e.changedTouches[0];
+    var distX = touchObj.pageX - startX;
+    var distY = touchObj.pageY - startY;
+    var time = new Date().getTime() - startTime;
+
+    if (Math.abs(distX) > distXThreshold && Math.abs(distY) < distYThreshold && time <= timeThreshold) {
+      if (distX > 0) onSwipeRight();
+      else onSwipeLeft();
+    }
+
+    e.preventDefault();
+  }, false);
+
+  d.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+  }, false);
+
+}
+      </script>";
 
             return section.Replace("</body>", js + "</body>");
         }
-
         public string ReadSection(int i)
         {
             if (i < 0 || i >= this.PathsToSectionsInReadingOrder.Count)
                 return null;
 
             this.CurrentSectionIndex = i;
-            return ModifySection(System.IO.File.ReadAllText(this.PathsToSectionsInReadingOrder[i]));
+            return InjectJavascriptIntoSection(System.IO.File.ReadAllText(this.PathsToSectionsInReadingOrder[i]));
         }
 
         public string ReadCurrentSection()

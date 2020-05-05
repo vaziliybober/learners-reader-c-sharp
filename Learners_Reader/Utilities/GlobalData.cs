@@ -16,7 +16,6 @@ namespace Learners_Reader.Utilities
     public static class GlobalData
     {
         public static string RootFolder { get; set; }
-
         public static Book CurrentBook { get; set; }
     }
 }

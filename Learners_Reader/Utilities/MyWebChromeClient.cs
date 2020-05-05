@@ -16,28 +16,54 @@ namespace Learners_Reader.Utilities
 {
     public class MyWebChromeClient : WebChromeClient
     {
-        private readonly MyWebView webView;
+        private readonly BookViewer bookViewer;
 
-        public MyWebChromeClient(MyWebView webView) : base()
+        public MyWebChromeClient(BookViewer bookViewer) : base()
         {
-            this.webView = webView;
+            this.bookViewer = bookViewer;
         }
-
-        public override bool OnConsoleMessage(ConsoleMessage consoleMessage)
+        public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
         {
-            Logger.Log("js" + consoleMessage.Message());
+            Logger.Log("JS", message);
 
-            if (consoleMessage.Message().StartsWith("<number of pages>:")) {
-                int pageCount = int.Parse(consoleMessage.Message().Split(':')[1]);
-                webView.PageCount = pageCount;
+            if (message.StartsWith("page count: "))
+            {
+                int pageCount = int.Parse(message.Split(": ")[1]);
+                (view as ChapterView).PageCount = pageCount;
             }
 
-            if (consoleMessage.Message() == "<event>:last_page_turn") {
-                Book book = GlobalData.CurrentBook;
-                webView.LoadDataWithBaseURL("file://" + book.RootFolderPath + "/", book.ReadNextSection(), "text/html", "UTF-8", null);
+            if (message == "swipe left")
+            {
+                bookViewer.ScrollToNextPage();
+            }
+
+            if (message == "swipe right")
+            {
+                bookViewer.ScrollToPrevPage();
+            }
+
+            result.Cancel();
+            return true;
+        }
+        /*public override bool OnConsoleMessage(ConsoleMessage consoleMessage)
+        {
+            Logger.Log("JS", consoleMessage.Message());
+
+            if (consoleMessage.Message().StartsWith("page count: ")) {
+                int pageCount = int.Parse(consoleMessage.Message().Split(": ")[1]);
+                chapterView.PageCount = pageCount;
+            }
+
+            if (consoleMessage.Message() == "swipe left") {
+                chapterView.ScrollToNextPage();
+            }
+
+            if (consoleMessage.Message() == "swipe right")
+            {
+                
             }
 
             return base.OnConsoleMessage(consoleMessage);
-        }
+        }*/
     }
 }

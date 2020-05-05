@@ -18,10 +18,8 @@ namespace Learners_Reader
     [Activity(Label = "BookActivity")]
     public class BookActivity : Activity
     {
-        MyWebView webView;
+        BookViewer bookViewer;
         Button nextChapterButton, prevChapterButton;
-
-        Book book;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -29,38 +27,34 @@ namespace Learners_Reader
 
             SetContentView(Resource.Layout.activity_book);
 
-            book = GlobalData.CurrentBook;
-
-            ConfigureWebView();
-            ConfugureSectionButtons();
+            ConfigureBookViewer();
+            ConfugureChapterButtons();
         }
 
-        private void ConfigureWebView()
+        private void ConfigureBookViewer()
         {
-            webView = FindViewById<MyWebView>(Resource.Id.webView);
-            webView.Settings.JavaScriptCanOpenWindowsAutomatically = true;
-            webView.Settings.JavaScriptEnabled = true;
-            webView.SetWebViewClient(new MyWebViewClient());
-            webView.SetWebChromeClient(new MyWebChromeClient(webView));
-            webView.HorizontalScrollBarEnabled = false;
-            webView.VerticalScrollBarEnabled = false;
+            Book book = GlobalData.CurrentBook;
 
-            webView.LoadDataWithBaseURL("file://" + book.RootFolderPath + "/", book.ReadSection(7), "text/html", "UTF-8", null);
+            ChapterView chv1 = FindViewById<ChapterView>(Resource.Id.chapterView1);
+            ChapterView chv2 = FindViewById<ChapterView>(Resource.Id.chapterView2);
+            ChapterView chv3 = FindViewById<ChapterView>(Resource.Id.chapterView3);
 
+            bookViewer = new BookViewer(book, chv1, chv2, chv3);
+            bookViewer.ShowChapter(5);
         }
 
-        private void ConfugureSectionButtons()
+        private void ConfugureChapterButtons()
         {
-            nextChapterButton = FindViewById<Button>(Resource.Id.nextSectionButton);
+            nextChapterButton = FindViewById<Button>(Resource.Id.nextChapterButton);
             nextChapterButton.Click += delegate (object sender, EventArgs e)
             {
-                webView.LoadDataWithBaseURL("file://" + book.RootFolderPath + "/", book.ReadNextSection(), "text/html", "UTF-8", null);
+                bookViewer.ShowNextChapter();
             };
 
-            prevChapterButton = FindViewById<Button>(Resource.Id.previousSectionButton);
+            prevChapterButton = FindViewById<Button>(Resource.Id.previousChapterButton);
             prevChapterButton.Click += delegate (object sender, EventArgs e)
             {
-                webView.LoadDataWithBaseURL("file://" + book.RootFolderPath + "/", book.ReadPreviousSection(), "text/html", "UTF-8", null);
+                bookViewer.ShowPrevChapter();
             };
         }
 

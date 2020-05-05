@@ -22,7 +22,7 @@ namespace Learners_Reader.Utilities
         public string Author { get; private set; }
         public string Language { get; private set; }
         public string Description { get; private set; }
-        public List<string> PathsToSectionsInReadingOrder { get; private set; }
+        public List<string> PathsToChaptersInReadingOrder { get; private set; }
 
         public EpubParser(string path)
         {
@@ -55,7 +55,7 @@ namespace Learners_Reader.Utilities
             this.Language = doc.GetElementsByTagName("language", "http://purl.org/dc/elements/1.1/")[0].InnerText;
             this.Description = doc.GetElementsByTagName("description", "http://purl.org/dc/elements/1.1/")[0].InnerText;
 
-            this.PathsToSectionsInReadingOrder = new List<string>();
+            this.PathsToChaptersInReadingOrder = new List<string>();
             XmlNode spineNode = doc.GetElementsByTagName("spine")[0];
             XmlNode manifestNode = doc.GetElementsByTagName("manifest")[0];
             XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
@@ -65,9 +65,9 @@ namespace Learners_Reader.Utilities
             {
                 string sectionId = itemRef.Attributes["idref"].Value;
                 
-                string relativeSectionPath = manifestNode.SelectSingleNode($"d:item[@id='{sectionId}']", nsManager).Attributes["href"].Value;
-                string sectionPath = System.IO.Path.Combine(this.RootFolderPath, relativeSectionPath);
-                this.PathsToSectionsInReadingOrder.Add(sectionPath);
+                string relativeChapterPath = manifestNode.SelectSingleNode($"d:item[@id='{sectionId}']", nsManager).Attributes["href"].Value;
+                string chapterPath = System.IO.Path.Combine(this.RootFolderPath, relativeChapterPath);
+                this.PathsToChaptersInReadingOrder.Add(chapterPath);
             }
         }
     }

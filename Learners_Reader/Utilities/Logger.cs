@@ -14,15 +14,15 @@ namespace Learners_Reader.Utilities
 {
     public static class Logger
     {
-        public static void Log(string tag, string message)
+        public static void Log(string tag, object message)
         {
             if (message == null)
                 message = "null";
 
-            Android.Util.Log.Debug(tag, message);
+            Android.Util.Log.Debug(tag, message.ToString());
         }
 
-        public static void Log(string message)
+        public static void Log(object message)
         {
             Log("Default", message);
         }

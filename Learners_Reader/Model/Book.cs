@@ -25,14 +25,14 @@ namespace Learners_Reader.Model
         public string Author { get; private set; }
         public string Language { get; private set; }
         public string Description { get; private set; }
-        public List<string> PathsToSectionsInReadingOrder { get; private set; }
+        private List<string> PathsToChaptersInReadingOrder { get; set; }
 
-        public int CurrentSectionIndex { get; set; }
+        public int ChapterCount { get { return this.PathsToChaptersInReadingOrder.Count; } }
+
 
         public Book(string path)
         {
             this.Path = path;
-            this.CurrentSectionIndex = 0;
 
             LoadBook();
         }
@@ -47,10 +47,10 @@ namespace Learners_Reader.Model
             this.Author = parser.Author;
             this.Language = parser.Language;
             this.Description = parser.Description;
-            this.PathsToSectionsInReadingOrder = parser.PathsToSectionsInReadingOrder;
+            this.PathsToChaptersInReadingOrder = parser.PathsToChaptersInReadingOrder;
         }
 
-        private string InjectJavascriptIntoSection(string section)
+        private string InjectJavascriptIntoChapter(string section)
         {
             string js = @"<script>
       var startX, startY, startTime;
@@ -66,30 +66,19 @@ window.onload = function () {
   d.style.columnGap = 0;
   d.style.margin = 0;
   var pageCount = Math.round(d.scrollWidth / d.clientWidth);
-  console.log('<number of pages>:' + pageCount);
+  alert('page count: ' + pageCount);
 
-  var currentPageIndex = 0;
 
   function onSwipeLeft() {
-    currentPageIndex++;
-    console.log(currentPageIndex);
-    if (currentPageIndex == pageCount) {
-      console.log('<event>:last_page_turn');
-      currentPageIndex = 0;
-    }
-    else {
-      window.scrollBy(d.clientWidth, 200);
-    }
+    alert('swipe left');
   }
 
   function onSwipeRight() {
-    currentPageIndex--;
-    console.log(currentPageIndex);
-    window.scrollBy(-d.clientWidth, 200);
+    alert('swipe right');
   }
 
 
-   d.addEventListener('touchstart', function (e) {
+  window.addEventListener('touchstart', function (e) {
     var touchObj = e.changedTouches[0];
     startX = touchObj.pageX;
     startY = touchObj.pageY;
@@ -97,7 +86,7 @@ window.onload = function () {
     e.preventDefault();
   }, {passive: false});
   
-  d.addEventListener('touchend', function (e) {
+  window.addEventListener('touchend', function (e) {
     var touchObj = e.changedTouches[0];
     var distX = touchObj.pageX - startX;
     var distY = touchObj.pageY - startY;
@@ -111,7 +100,7 @@ window.onload = function () {
     e.preventDefault();
   }, {passive: false});
 
-  d.addEventListener('touchmove', function(e) {
+  window.addEventListener('touchmove', function(e) {
     e.preventDefault();
   }, {passive: false});
 
@@ -121,28 +110,12 @@ window.onload = function () {
             return section.Replace("</body>", js + "</body>");
         }
 
-        public string ReadSection(int i)
+        public string ReadChapter(int i)
         {
-            if (i < 0 || i >= this.PathsToSectionsInReadingOrder.Count)
+            if (i < 0 || i >= this.PathsToChaptersInReadingOrder.Count)
                 return null;
 
-            this.CurrentSectionIndex = i;
-            return InjectJavascriptIntoSection(System.IO.File.ReadAllText(this.PathsToSectionsInReadingOrder[i]));
-        }
-
-        public string ReadCurrentSection()
-        {
-            return ReadSection(this.CurrentSectionIndex);
-        }
-
-        public string ReadNextSection()
-        {
-            return ReadSection(this.CurrentSectionIndex + 1);
-        }
-
-        public string ReadPreviousSection()
-        {
-            return ReadSection(this.CurrentSectionIndex - 1);
+            return InjectJavascriptIntoChapter(System.IO.File.ReadAllText(this.PathsToChaptersInReadingOrder[i]));
         }
     }
 }

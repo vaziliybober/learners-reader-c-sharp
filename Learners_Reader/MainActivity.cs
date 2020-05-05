@@ -41,7 +41,7 @@ namespace Learners_Reader
             ConfigureFilePicker();
             ConfigureAddBookButton();
 
-            Test();
+            //Test();
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

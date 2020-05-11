@@ -107,13 +107,18 @@ var pageCount = Math.round(d.scrollWidth / d.clientWidth);
 function getWordClicked(e) {
     try {
       var sel = window.getSelection();
+      console.log(sel.getRangeAt(0).toString());
       sel.modify('extend', 'forward', 'word');
       sel.collapseToEnd();
       sel.modify('extend', 'backward', 'word');
       var word = sel.getRangeAt(0).toString();
+      sel.modify('extend', 'forward', 'sentence');
+      sel.collapseToEnd();
+      sel.modify('extend', 'backward', 'sentence');
+      var sentence = sel.getRangeAt(0).toString();
       sel.empty();
       if (word.length != 0 && (word[0] >= 'a' && word[0] <= 'z' || word[0] >= 'A' && word[0] <= 'Z')) {
-        alert('word selected: ' + word.trim());
+        alert('word selected: ' + word + '|' + sentence);
       }
     }
     catch (e) {

@@ -24,6 +24,8 @@ namespace Learners_Reader.Utilities
         public event Action SwipeRight;
         public event Action SwipeDown;
 
+        public event Action<string, string> WordSelected;
+
 
         public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
         {
@@ -49,6 +51,14 @@ namespace Learners_Reader.Utilities
             if (message == "swipe down")
             {
                 SwipeDown?.Invoke();
+            }
+
+            if (message.StartsWith("word selected: "))
+            {
+                string word = message.Split(": ")[1].Split('|')[0];
+                string sentence = message.Split(": ")[1].Split('|')[1];
+
+                WordSelected?.Invoke(word, sentence);
             }
 
             result.Cancel();

@@ -52,6 +52,8 @@ namespace Learners_Reader
         private Button largerFontSizeButton;
         private Button smallerFontSizeButton;
 
+        private Button showWordInfoListButton;
+
 
         /////////////////////////////////////////////////////////////////////
 
@@ -257,9 +259,20 @@ namespace Learners_Reader
 
             }
 
+            void ConfigureShowWordInfoList()
+            {
+                showWordInfoListButton = FindViewById<Button>(Resource.Id.showWordInfoListButton);
+                showWordInfoListButton.Click += (object sender, EventArgs e) =>
+                {
+                    Intent nextActivityIntent = new Intent(this, typeof(WordInfoListActivity));
+                    StartActivity(nextActivityIntent);
+                };
+            }
+
             ConfigurePageNavigation();
             ConfigureChapterNavigation();
             ConfigureFontSizeChanging();
+            ConfigureShowWordInfoList();
         }
 
         private void InitializeProperties()
@@ -335,6 +348,14 @@ namespace Learners_Reader
             chv.MyWebChromeClient.SwipeDown += () =>
             {
                 topMenuLayout.Visibility = ViewStates.Visible;
+            };
+
+            chv.MyWebChromeClient.WordSelected += (string word, string sentence) =>
+            {
+                GlobalData.CurrentWord = word;
+                GlobalData.CurrentContext = sentence;
+                Intent nextActivityIntent = new Intent(this, typeof(TranslationActivity));
+                StartActivity(nextActivityIntent);
             };
 
             chv.BaseURL = "file://" + book.RootFolderPath + "/";

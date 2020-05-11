@@ -17,5 +17,8 @@ namespace Learners_Reader.Utilities
     {
         public static string RootFolder { get; set; }
         public static Book CurrentBook { get; set; }
+        public static string CurrentWord { get; set; }
+        public static string CurrentContext { get; set; }
+        public static string CurrentNotes { get; set; }
     }
 }

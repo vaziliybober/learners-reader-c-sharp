@@ -67,6 +67,9 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Epub\WordInfoDatabase.cs" />
+    <Compile Include="Epub\WordInfo.cs" />
+    <Compile Include="TranslationActivity.cs" />
     <Compile Include="BookActivity.cs" />
     <Compile Include="BookInfoActivity.cs" />
     <Compile Include="Epub\Database.cs" />
@@ -85,6 +88,8 @@
     <Compile Include="View\BookScanner.cs" />
     <Compile Include="View\MyNumberEditText.cs" />
     <Compile Include="View\PageNumberView.cs" />
+    <Compile Include="WordInfoActivity.cs" />
+    <Compile Include="WordInfoListActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -144,6 +149,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_translation.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_wordinfo.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\activity_wordinfolist.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

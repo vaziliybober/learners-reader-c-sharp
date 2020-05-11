@@ -28,13 +28,13 @@ namespace Learners_Reader.Utilities
             return splitPath[^1] == "epub";
         }
 
-        public static string ListToString<T>(List<T> list)
+        public static string ListToString<T>(List<T> list, string sep=" ")
         {
             string result = "";
 
             foreach (T item in list)
             {
-                result += item.ToString() + " ";
+                result += item.ToString() + sep;
             }
 
             return result.Trim();

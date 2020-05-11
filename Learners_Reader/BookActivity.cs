@@ -157,11 +157,13 @@ namespace Learners_Reader
 
             bookScanner.StartedScanning += () =>
             {
+                pageNumberView.CurrentPageNumberIsLoading = true;
                 pageNumberView.TotalPageCountIsLoading = true;
             };
 
             bookScanner.FinishedScanning += () =>
             {
+                pageNumberView.CurrentPageNumberIsLoading = false;
                 pageNumberView.TotalPageCountIsLoading = false;
             };
 
@@ -234,13 +236,10 @@ namespace Learners_Reader
                 largerFontSizeButton = FindViewById<Button>(Resource.Id.largerFontSizeButton);
                 largerFontSizeButton.Click += (object sender, EventArgs e) =>
                 {
-                    pageNumberView.CurrentPageNumberIsLoading = true;
                     book.FontSize += 10;
                     bookScanner.ScanThroughBook(book, () =>
                     {
-                        Logger.Log("here");
                         this.AbsolutePageNumber = bookScanner.GetAbsolutePageNumber(this.ChapterIndex, this.CurrChapterView.CurrentPageIndex);
-                        pageNumberView.CurrentPageNumberIsLoading = false;
                     });
                     ShowChapter(this.ChapterIndex);
                 };
@@ -248,13 +247,10 @@ namespace Learners_Reader
                 smallerFontSizeButton = FindViewById<Button>(Resource.Id.smallerFontSizeButton);
                 smallerFontSizeButton.Click += (object sender, EventArgs e) =>
                 {
-                    pageNumberView.CurrentPageNumberIsLoading = true;
                     book.FontSize -= 10;
                     bookScanner.ScanThroughBook(book, () =>
                     {
-                        Logger.Log("here");
                         this.AbsolutePageNumber = bookScanner.GetAbsolutePageNumber(this.ChapterIndex, this.CurrChapterView.CurrentPageIndex);
-                        pageNumberView.CurrentPageNumberIsLoading = false;
                     });
                     ShowChapter(this.ChapterIndex);
                 };
@@ -288,7 +284,7 @@ namespace Learners_Reader
             book.FontSize = database.LoadFontSize();
             book.FontSizeChanged += database.OnFontSizeChanged;
 
-            
+
 
             if (totalPageCount != 0 && firstPageNumbers.Count != 0 && lastPageNumbers.Count != 0)
             {
@@ -296,13 +292,11 @@ namespace Learners_Reader
             }
             else
             {
-                pageNumberView.CurrentPageNumberIsLoading = true;
                 bookScanner.ScanThroughBook(book, () =>
-                    {
-                    Logger.Log("here");
+                {
                     this.AbsolutePageNumber = bookScanner.GetAbsolutePageNumber(this.ChapterIndex, this.CurrChapterView.CurrentPageIndex);
-                    pageNumberView.CurrentPageNumberIsLoading = false;
                 });
+                pageNumberView.CurrentPageNumberIsLoading = false;
             }
         }
 

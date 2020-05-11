@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using System.Xml;
 
-namespace Learners_Reader.Utilities
+namespace Learners_Reader.Epub
 {
     public class EpubParser
     {
@@ -23,6 +23,7 @@ namespace Learners_Reader.Utilities
         public string Language { get; private set; }
         public string Description { get; private set; }
         public List<string> PathsToChaptersInReadingOrder { get; private set; }
+        public List<string> ChapterTitles { get; private set; }
 
         public EpubParser(string path)
         {
@@ -33,6 +34,7 @@ namespace Learners_Reader.Utilities
         {
             ParseContainer();
             ParseRootFile();
+            ParseChapters();
         }
 
         private void ParseContainer()
@@ -68,6 +70,22 @@ namespace Learners_Reader.Utilities
                 string relativeChapterPath = manifestNode.SelectSingleNode($"d:item[@id='{sectionId}']", nsManager).Attributes["href"].Value;
                 string chapterPath = System.IO.Path.Combine(this.RootFolderPath, relativeChapterPath);
                 this.PathsToChaptersInReadingOrder.Add(chapterPath);
+            }
+        }
+
+        private void ParseChapters()
+        {
+            this.ChapterTitles = new List<string>();
+
+            for (int i = 0; i < this.PathsToChaptersInReadingOrder.Count; i++)
+            {
+                string path = this.PathsToChaptersInReadingOrder[i];
+
+                XmlDocument doc = new XmlDocument();
+                doc.Load(path);
+
+                string chapterTitle = doc.GetElementsByTagName("title")[0].InnerText;
+                this.ChapterTitles.Add($"{i + 1}. " + chapterTitle);
             }
         }
     }

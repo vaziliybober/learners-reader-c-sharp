@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Learners_Reader.Model;
+using Learners_Reader.Epub;
 using Learners_Reader.Utilities;
 
 namespace Learners_Reader

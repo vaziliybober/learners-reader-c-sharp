@@ -38,6 +38,11 @@
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
+    <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -64,21 +69,22 @@
   <ItemGroup>
     <Compile Include="BookActivity.cs" />
     <Compile Include="BookInfoActivity.cs" />
+    <Compile Include="Epub\Database.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Model\Book.cs" />
-    <Compile Include="Model\EpubException.cs" />
-    <Compile Include="Model\Library.cs" />
+    <Compile Include="Epub\Book.cs" />
+    <Compile Include="Epub\Library.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\BookViewer.cs" />
-    <Compile Include="Utilities\EpubParser.cs" />
+    <Compile Include="Epub\EpubParser.cs" />
     <Compile Include="Utilities\FilePicker.cs" />
     <Compile Include="Utilities\Functions.cs" />
     <Compile Include="Utilities\GlobalData.cs" />
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\MyWebChromeClient.cs" />
-    <Compile Include="Utilities\ChapterView.cs" />
-    <Compile Include="Utilities\MyWebViewClient.cs" />
+    <Compile Include="View\ChapterView.cs" />
+    <Compile Include="View\BookScanner.cs" />
+    <Compile Include="View\MyNumberEditText.cs" />
+    <Compile Include="View\PageNumberView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -138,11 +144,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\index.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\activity_book_test.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

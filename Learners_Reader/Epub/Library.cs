@@ -13,7 +13,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using Learners_Reader.Utilities;
 using System.IO;
 
-namespace Learners_Reader.Model
+namespace Learners_Reader.Epub
 {
     public class Library
     {

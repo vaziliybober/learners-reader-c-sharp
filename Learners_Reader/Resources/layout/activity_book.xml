@@ -3,60 +3,208 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@android:color/white"
     android:layout_height="match_parent">
+
+
+
+
+
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_weight="1"
+        android:background="@android:color/white"
         android:id="@+id/relativeLayout1">
 
-        <learners_reader.utilities.ChapterView
+        <learners_reader.view.ChapterView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minWidth="25px"
             android:minHeight="25px"
             android:id="@+id/chapterView1" />
 
-        <learners_reader.utilities.ChapterView
+        <learners_reader.view.ChapterView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minWidth="25px"
             android:minHeight="25px"
             android:id="@+id/chapterView2" />
 
-        <learners_reader.utilities.ChapterView
+        <learners_reader.view.ChapterView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minWidth="25px"
             android:minHeight="25px"
             android:id="@+id/chapterView3" />
+
+        <learners_reader.view.BookScanner
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:id="@+id/bookScanner" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/material_blue_grey_950"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:clickable="true"
+                android:id="@+id/topMenuLayout">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Page"
+                        android:textAlignment="center"
+                        android:textSize="18dp"
+                        android:textColor="@android:color/white"/>
+
+                    <learners_reader.view.MyNumberEditText
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:layout_weight="1"
+                        android:backgroundTint="@android:color/white"
+                        android:hint="0-99"
+                        android:textAlignment="center"
+                        android:textColorHint="@color/material_grey_600"
+                        android:id="@+id/pageNumberEditText" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:enabled="false"
+                        android:text="Move"
+                        android:id="@+id/moveToPageButton"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Chapter"
+                        android:textAlignment="center"
+                        android:textSize="18dp"
+                        android:textColor="@android:color/white"/>
+
+                    <Spinner
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:spinnerMode="dropdown"
+                        android:background="@android:drawable/btn_dropdown"
+                        android:id="@+id/dropDownChapterSpinner"/>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Move"
+                        android:id="@+id/moveToChapterButton"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Font size"
+                        android:textAlignment="center"
+                        android:textSize="18dp"
+                        android:textColor="@android:color/white"/>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Smaller"
+                        android:id="@+id/smallerFontSizeButton"/>
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Larger"
+                        android:id="@+id/largerFontSizeButton"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Close"
+                    android:layout_gravity="center"
+                    android:id="@+id/topMenuCloseButton"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                android:background="@color/material_blue_grey_950">
+
+                
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
     </RelativeLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="wrap_content"
+
+
+
+
+    <learners_reader.view.PageNumberView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/linearLayout1">
-
-
-
-        <Button
-            android:text="Prev chapter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/previousChapterButton" />
-
-        <Button
-            android:text="Next chapter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/nextChapterButton" />
-
-    </LinearLayout>
+        android:gravity="center"
+        android:id="@+id/pageNumberView" />
 
 </LinearLayout>

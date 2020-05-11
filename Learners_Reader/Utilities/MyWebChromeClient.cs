@@ -10,18 +10,21 @@ using Android.Runtime;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
-using Learners_Reader.Model;
+using Learners_Reader.Epub;
+using Learners_Reader.Utilities;
 
 namespace Learners_Reader.Utilities
 {
     public class MyWebChromeClient : WebChromeClient
     {
-        private readonly BookViewer bookViewer;
 
-        public MyWebChromeClient(BookViewer bookViewer) : base()
-        {
-            this.bookViewer = bookViewer;
-        }
+        public event Action<int> ChapterLoaded;
+
+        public event Action SwipeLeft;
+        public event Action SwipeRight;
+        public event Action SwipeDown;
+
+
         public override bool OnJsAlert(WebView view, string url, string message, JsResult result)
         {
             Logger.Log("JS", message);
@@ -29,41 +32,27 @@ namespace Learners_Reader.Utilities
             if (message.StartsWith("page count: "))
             {
                 int pageCount = int.Parse(message.Split(": ")[1]);
-                (view as ChapterView).PageCount = pageCount;
+
+                ChapterLoaded?.Invoke(pageCount);
             }
 
             if (message == "swipe left")
             {
-                bookViewer.ScrollToNextPage();
+                SwipeLeft?.Invoke();
             }
 
             if (message == "swipe right")
             {
-                bookViewer.ScrollToPrevPage();
+                SwipeRight?.Invoke();
+            }
+
+            if (message == "swipe down")
+            {
+                SwipeDown?.Invoke();
             }
 
             result.Cancel();
             return true;
         }
-        /*public override bool OnConsoleMessage(ConsoleMessage consoleMessage)
-        {
-            Logger.Log("JS", consoleMessage.Message());
-
-            if (consoleMessage.Message().StartsWith("page count: ")) {
-                int pageCount = int.Parse(consoleMessage.Message().Split(": ")[1]);
-                chapterView.PageCount = pageCount;
-            }
-
-            if (consoleMessage.Message() == "swipe left") {
-                chapterView.ScrollToNextPage();
-            }
-
-            if (consoleMessage.Message() == "swipe right")
-            {
-                
-            }
-
-            return base.OnConsoleMessage(consoleMessage);
-        }*/
     }
 }

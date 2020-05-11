@@ -5,7 +5,7 @@ using Android.Runtime;
 using Android.Widget;
 using System.Collections.Generic;
 using Learners_Reader.Utilities;
-using Learners_Reader.Model;
+using Learners_Reader.Epub;
 using System;
 using Android.Support.V4.Content;
 using Android;
@@ -41,7 +41,7 @@ namespace Learners_Reader
             ConfigureFilePicker();
             ConfigureAddBookButton();
 
-            //Test();
+            Test();
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -76,6 +76,7 @@ namespace Learners_Reader
             {
                 string selectedBookTitle = library.GetAllBookNames()[args.Position];
                 GlobalData.CurrentBook = library.GetBook(selectedBookTitle);
+                Book t = GlobalData.CurrentBook;
 
                 Intent nextActivityIntent = new Intent(this, typeof(BookInfoActivity));
                 StartActivity(nextActivityIntent);
@@ -113,7 +114,7 @@ namespace Learners_Reader
                         adapter.NotifyDataSetChanged();
                         Toast.MakeText(this, "Parsing the book...", ToastLength.Short).Show();
                     }
-                    catch (EpubException ex)
+                    catch (Exception ex)
                     {
                         Logger.Log("Error", ex.Message);
                         Toast.MakeText(this, "Couldn't parse the file!", ToastLength.Short).Show();

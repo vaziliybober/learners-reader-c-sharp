@@ -29,32 +29,16 @@ namespace Learners_Reader.Epub
         {
             this.WordInfoList = new List<WordInfo>();
 
-            foreach (string file in System.IO.Directory.GetFiles(this.Path))
+            foreach (string directory in System.IO.Directory.GetDirectories(this.Path))
             {
                 WordInfo word = new WordInfo();
-                word.ContextList = new List<string>();
 
-                string[] lines = System.IO.File.ReadAllLines(file);
+                word.Word = System.IO.File.ReadAllText(System.IO.Path.Combine(directory, "word.txt"));
+                word.Notes = System.IO.File.ReadAllText(System.IO.Path.Combine(directory, "notes.txt"));
 
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    if (i == 0)
-                    {
-                        word.Word = lines[i];
-                    }
+                word.ContextList = new List<string>(System.IO.File.ReadAllLines(System.IO.Path.Combine(directory, "context_list.txt")));
 
-                    else if (i == 1)
-                    {
-                        word.Notes = lines[i];
-                    }
-
-                    else
-                    {
-                        word.ContextList.Add(lines[i]);
-                    }
-                }
-
-                this.WordInfoList.Add(word);
+                WordInfoList.Add(word);
             }
         }
 
@@ -62,17 +46,25 @@ namespace Learners_Reader.Epub
         {
             foreach (WordInfo word in this.WordInfoList)
             {
+                string path = System.IO.Path.Combine(this.Path, word.Word);
+                System.IO.Directory.CreateDirectory(path);
+
+                string wordPath = System.IO.Path.Combine(path, "word.txt");
+                string notesPath = System.IO.Path.Combine(path, "notes.txt");
+                string contextListPath = System.IO.Path.Combine(path, "context_list.txt");
+
+                System.IO.File.WriteAllText(wordPath, word.Word);
+                System.IO.File.WriteAllText(notesPath, word.Notes);
+                
+
                 string data = "";
-                string path = System.IO.Path.Combine(this.Path, word.Word + ".txt");
-                data += word.Word + "\n";
-                data += word.Notes + "\n";
 
                 foreach (string context in word.ContextList)
                 {
                     data += context + "\n";
                 }
 
-                System.IO.File.WriteAllText(path, data);
+                System.IO.File.WriteAllText(contextListPath, data);
             }
         }
 

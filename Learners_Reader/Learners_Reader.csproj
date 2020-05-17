@@ -54,8 +54,12 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -67,12 +71,13 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Epub\Database.cs" />
     <Compile Include="Epub\WordInfoDatabase.cs" />
     <Compile Include="Epub\WordInfo.cs" />
     <Compile Include="TranslationActivity.cs" />
     <Compile Include="BookActivity.cs" />
     <Compile Include="BookInfoActivity.cs" />
-    <Compile Include="Epub\Database.cs" />
+    <Compile Include="Epub\BookDatabase.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Epub\Book.cs" />
     <Compile Include="Epub\Library.cs" />

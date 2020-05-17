@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -15,7 +16,7 @@ using Learners_Reader.Utilities;
 
 namespace Learners_Reader
 {
-    [Activity(Label = "TranslationActivity")]
+    [Activity(Label = "")]
     public class TranslationActivity : Activity
     {
         private WordInfoDatabase wordDatabase;
@@ -44,7 +45,7 @@ namespace Learners_Reader
 
         private void ConfigureWordInfoDatabase()
         {
-            wordDatabase = new WordInfoDatabase(System.IO.Path.Combine(GlobalData.RootFolder, "Words"));
+            wordDatabase = new WordInfoDatabase(GlobalData.VocabularyFolder);
             wordDatabase.Load();
         }
         private void ConfigureWebView()
@@ -60,6 +61,15 @@ namespace Learners_Reader
         private void ConfigureWordEditText()
         {
             wordEditText = FindViewById<EditText>(Resource.Id.wordEditText);
+            wordEditText.TextChanged += (object sender, Android.Text.TextChangedEventArgs e) =>
+            {
+                if (wordEditText.Text != Functions.RemoveInvalidCharactersFromPath(e.Text.ToString()))
+                {
+                    wordEditText.Text = Functions.RemoveInvalidCharactersFromPath(e.Text.ToString());
+                    wordEditText.SetSelection(wordEditText.Text.Length);
+                }
+            };
+
             wordEditText.Text = GlobalData.CurrentWord;
         }
 
@@ -74,18 +84,17 @@ namespace Learners_Reader
             saveButton = FindViewById<Button>(Resource.Id.saveButton);
             saveButton.Click += (object sender, EventArgs e) =>
             {
-                if (GlobalData.CurrentNotes != null)
+                if (GlobalData.CurrentContext != null)
                 {
-                    wordDatabase.TryChangeNotes(wordEditText.Text, GlobalData.CurrentNotes);
-                    GlobalData.CurrentNotes = null;
-                }
-
-
-                if (GlobalData.CurrentNotes != null)
                     wordDatabase.TryAddContext(wordEditText.Text, GlobalData.CurrentContext);
-
-                wordDatabase.Save();
-                Toast.MakeText(this, "Saving...", ToastLength.Short).Show();
+                    GlobalData.CurrentContext = null;
+                    wordDatabase.Save();
+                    Toast.MakeText(this, "Saving...", ToastLength.Short).Show();
+                }
+                else
+                {
+                    Toast.MakeText(this, "No new context to save.", ToastLength.Short).Show();
+                }
 
             };
         }

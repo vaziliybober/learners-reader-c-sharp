@@ -19,7 +19,7 @@ namespace Learners_Reader.Epub
     {
         readonly FastZip fastZip = new FastZip();
 
-        private List<Book> Books { get; set; }
+        public List<Book> Books { get; private set; }
         public string Path { get; }
 
         public Library(string path) : base()
@@ -27,20 +27,15 @@ namespace Learners_Reader.Epub
             this.Path = path;
             this.Books = new List<Book>();
 
-            LoadLibrary();
+            Load();
         }
 
-        private void LoadLibrary()
+        private void Load()
         {
             foreach (string directory in Directory.GetDirectories(this.Path))
             {
-                AddBook(directory);
+                this.Books.Add(new Book(directory));
             }
-        }
-
-        private void AddBook(string path)
-        {
-            this.Books.Add(new Book(path));
         }
 
         public List<string> GetAllBookNames()
@@ -49,31 +44,40 @@ namespace Learners_Reader.Epub
 
             foreach (Book book in this.Books)
             {
-                result.Add(book.Title);
+                result.Add(book.Title + " by " + book.Author);
             }
 
             return result;
         }
 
-        public void ImportBook(string path)
+        public void AddBook(string path)
         {
-            string filename = System.IO.Path.GetFileNameWithoutExtension(path);
-            string newfolderpath = this.Path + "/" + filename;
-            System.IO.Directory.CreateDirectory(newfolderpath);
-            fastZip.ExtractZip(path, newfolderpath, null);
+            string filename = Functions.RemoveInvalidCharactersFromPath(System.IO.Path.GetFileNameWithoutExtension(path));
+            string newfolderpath = System.IO.Path.Combine(this.Path, filename);
+            newfolderpath = Functions.CreateDirectory(newfolderpath);
+            
 
-            AddBook(newfolderpath);
+            try
+            {
+                fastZip.ExtractZip(path, newfolderpath, null);
+                this.Books.Add(new Book(newfolderpath));
+            }
+            catch (Exception e)
+            {
+                System.IO.Directory.Delete(newfolderpath, true);
+                throw e;
+            }
         }
 
-        public Book GetBook(string title)
-        {
-            foreach (Book book in this.Books)
+            public Book GetBook(string title)
             {
-                if (book.Title == title)
-                    return book;
-            }
+                foreach (Book book in this.Books)
+                {
+                    if (book.Title == title)
+                        return book;
+                }
 
-            return null;
+                return null;
+            }
         }
     }
-}

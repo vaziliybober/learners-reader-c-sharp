@@ -61,8 +61,8 @@ namespace Learners_Reader.View
             if (pageIndex < 0 || pageIndex >= this.PageCount)
                 return;
 
-
-            int visibleWidth = this.MeasuredWidth + 2;
+            Logger.Log(Width + " " + MeasuredWidth);
+            int visibleWidth = Math.Max(ComputeHorizontalScrollRange() / this.PageCount + 1, this.MeasuredWidth + 1);
 
             ScrollTo(visibleWidth * pageIndex, 0);
             CurrentPageIndex = pageIndex;
@@ -86,16 +86,6 @@ namespace Learners_Reader.View
         public void ScrollToEnd()
         {
             ScrollToPage(this.PageCount - 1);
-        }
-
-        public override bool OnTouchEvent(MotionEvent e)
-        {
-            /*if (e.Action == MotionEventActions.Move)
-            {
-                return true;
-            }*/
-
-            return base.OnTouchEvent(e);
         }
 
         public MyWebChromeClient MyWebChromeClient { get; private set; }

@@ -14,21 +14,64 @@ namespace Learners_Reader.Utilities
 {
     public static class Functions
     {
-        public static bool IsFileEpub(string path)
+        public static string RemoveInvalidCharactersFromFilename(string filename)
         {
-            if (path == null)
-                return false;
+            string allowedSymbols = "1234567890-qwertyuiop[]{}asdfghjkl;'\"zxcvbnm,./<>?!@#$%^&*()!№;%:\\йцукенгшщзхъфывапролджэячсмитьбюъхё. `~ЁЙЦУКЕНГШЩЗФЫВАПРОЛДЯЧСМИТЬБЮЪХQWERTYUIOPASDFGHJKLZXCVBNM";
+            string result = "";
 
-            string[] splitPath = path.Split('.');
+            foreach (char s in filename)
+            {
+                if (allowedSymbols.Contains(s))
+                    result += s;
+            }
 
-            if (splitPath.Length == 0)
-                return false;
+            if (result.Length > 25)
+            {
+                return result.Substring(0, 25);
+            }
 
-            // ^1 in C# is like [-1] in Python
-            return splitPath[^1] == "epub";
+            return result;
         }
 
-        public static string ListToString<T>(List<T> list, string sep=" ")
+
+        public static string RemoveInvalidCharactersFromPath(string filename)
+        {
+            string allowedSymbols = "1234567890-qwertyuiop[]{}asdfghjkl;'\"zxcvbnm,./<>?!@#$%^&*()!№;%:\\йцукенгшщзхъфывапролджэячсмитьбюъхё. `~ЁЙЦУКЕНГШЩЗФЫВАПРОЛДЯЧСМИТЬБЮЪХQWERTYUIOPASDFGHJKLZXCVBNM";
+            string result = "";
+
+            foreach (char s in filename)
+            {
+                if (allowedSymbols.Contains(s))
+                    result += s;
+            }
+
+            if (result.Length > 25)
+            {
+                return result.Substring(0, 25);
+            }
+
+            return result;
+        }
+
+        public static string CreateDirectory(string path)
+        {
+            if (System.IO.Directory.Exists(path))
+            {
+                int i;
+                for (i = 1; System.IO.Directory.Exists(path + $"({ i})"); i++) ;
+
+                path += $"({ i})";
+                System.IO.Directory.CreateDirectory(path);
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(path);
+            }
+
+            return path;
+        }
+
+        public static string ListToString<T>(List<T> list, string sep = " ")
         {
             string result = "";
 

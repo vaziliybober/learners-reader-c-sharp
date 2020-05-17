@@ -55,8 +55,8 @@ namespace Learners_Reader.Utilities
 
             if (message.StartsWith("word selected: "))
             {
-                string word = message.Split(": ")[1].Split('|')[0];
-                string sentence = message.Split(": ")[1].Split('|')[1];
+                string word = message.Split(": ")[1].Split('|')[0].Trim().ToLower();
+                string sentence = message.Split(": ")[1].Split('|')[1].Trim();
 
                 WordSelected?.Invoke(word, sentence);
             }

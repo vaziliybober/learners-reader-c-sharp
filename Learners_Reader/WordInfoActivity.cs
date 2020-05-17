@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using Learners_Reader.Epub;
@@ -14,13 +15,14 @@ using Learners_Reader.Utilities;
 
 namespace Learners_Reader
 {
-    [Activity(Label = "WordInfoActivity")]
-    public class WordInfoActivity : Activity
+    [Activity(Label = "Word information")]
+    public class WordInfoActivity : AppCompatActivity
     {
         private WordInfoDatabase wordDatabase;
 
         private WordInfo wordInfo;
 
+        private TextView wordTextView;
         private TextView contextListTextView;
 
         private EditText notesEditText;
@@ -35,6 +37,7 @@ namespace Learners_Reader
             SetContentView(Resource.Layout.activity_wordinfo);
 
             ConfigureWordInfoDatabase();
+            ConfigureWordTextView();
             ConfigureContextListTextView();
             ConfigureNotesEditText();
             ConfigureSaveButton();
@@ -52,6 +55,12 @@ namespace Learners_Reader
                 wordInfo = new WordInfo();
                 wordInfo.Word = GlobalData.CurrentWord;
             }
+        }
+
+        private void ConfigureWordTextView()
+        {
+            wordTextView = FindViewById<TextView>(Resource.Id.wordTextView);
+            wordTextView.Text = "Word: " + wordInfo.Word;
         }
 
         private void ConfigureContextListTextView()

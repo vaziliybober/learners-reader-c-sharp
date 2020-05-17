@@ -1,29 +1,66 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:maxLines="20"
-        android:layout_weight="1"
-        android:id="@+id/contextListTextView"/>
-
-    <EditText
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="top|left"
-        android:id="@+id/notesEditText"/>
-
-    <Button
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:layout_gravity="center"
-        android:id="@+id/saveButton"/>
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/wordTextView"/>
+
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Contexts"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:gravity="center"
+            android:maxLines="20"
+            android:layout_weight="1"
+            android:id="@+id/contextListTextView"/>
+
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Notes"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="top|left"
+            android:id="@+id/notesEditText"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:gravity="center"
+            android:id="@+id/saveButton"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

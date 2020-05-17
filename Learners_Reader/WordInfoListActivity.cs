@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using Learners_Reader.Epub;
@@ -14,8 +15,8 @@ using Learners_Reader.Utilities;
 
 namespace Learners_Reader
 {
-    [Activity(Label = "WordInfoListActivity")]
-    public class WordInfoListActivity : Activity
+    [Activity(Label = "Vocabulary")]
+    public class WordInfoListActivity : AppCompatActivity
     {
         private WordInfoDatabase wordDatabase;
 
@@ -50,7 +51,7 @@ namespace Learners_Reader
             ArrayAdapter adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, words);
             wordListView.Adapter = adapter;
 
-            wordListView.ItemClick += delegate (object sender, AdapterView.ItemClickEventArgs args)
+            wordListView.ItemClick += (object sender, AdapterView.ItemClickEventArgs args) =>
             {
                 string word = words[args.Position];
                 GlobalData.CurrentWord = word;

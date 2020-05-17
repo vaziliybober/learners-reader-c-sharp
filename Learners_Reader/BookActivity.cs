@@ -17,12 +17,12 @@ using Learners_Reader.View;
 
 namespace Learners_Reader
 {
-    [Activity(Label = "BookActivity")]
-    public class BookActivity : AppCompatActivity
+    [Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    public class BookActivity : Activity
     {
         private Book book;
 
-        private Database database;
+        private BookDatabase database;
 
         private ChapterView chv1;
         private ChapterView chv2;
@@ -98,6 +98,7 @@ namespace Learners_Reader
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            this.
 
             SetContentView(Resource.Layout.activity_book);
 
@@ -119,7 +120,7 @@ namespace Learners_Reader
         {
             string pathToDatabase = System.IO.Path.Combine(book.Path, "Data");
             System.IO.Directory.CreateDirectory(pathToDatabase);
-            database = new Database(pathToDatabase);
+            database = new BookDatabase(pathToDatabase);
         }
 
         private void ConfigureChapterViews()
@@ -231,6 +232,16 @@ namespace Learners_Reader
                 {
                     ShowChapter(dropDownChapterSpinner.SelectedItemPosition);
                 };
+
+                bookScanner.StartedScanning += () =>
+                {
+                    moveToChapterButton.Enabled = false;
+                };
+
+                bookScanner.FinishedScanning += () =>
+                {
+                    moveToChapterButton.Enabled = true;
+                };
             }
 
             void ConfigureFontSizeChanging()
@@ -238,23 +249,21 @@ namespace Learners_Reader
                 largerFontSizeButton = FindViewById<Button>(Resource.Id.largerFontSizeButton);
                 largerFontSizeButton.Click += (object sender, EventArgs e) =>
                 {
-                    book.FontSize += 10;
-                    bookScanner.ScanThroughBook(book, () =>
+                    if (book.FontSize < 300)
                     {
-                        this.AbsolutePageNumber = bookScanner.GetAbsolutePageNumber(this.ChapterIndex, this.CurrChapterView.CurrentPageIndex);
-                    });
-                    ShowChapter(this.ChapterIndex);
+                        book.FontSize += 10;
+                        Reload();
+                    }
                 };
 
                 smallerFontSizeButton = FindViewById<Button>(Resource.Id.smallerFontSizeButton);
                 smallerFontSizeButton.Click += (object sender, EventArgs e) =>
                 {
-                    book.FontSize -= 10;
-                    bookScanner.ScanThroughBook(book, () =>
+                    if (book.FontSize > 10)
                     {
-                        this.AbsolutePageNumber = bookScanner.GetAbsolutePageNumber(this.ChapterIndex, this.CurrChapterView.CurrentPageIndex);
-                    });
-                    ShowChapter(this.ChapterIndex);
+                        book.FontSize -= 10;
+                        Reload();
+                    }
                 };
 
             }
@@ -382,6 +391,15 @@ namespace Learners_Reader
             NextChapterView.CurrentPageIndexChanged -= RedirectInvoke;
         }
 
+        private void Reload()
+        {
+            bookScanner.ScanThroughBook(book, () =>
+            {
+                this.AbsolutePageNumber = bookScanner.GetAbsolutePageNumber(this.ChapterIndex, this.CurrChapterView.CurrentPageIndex);
+            });
+            ShowChapter(this.ChapterIndex);
+        }
+
 
         /////////////////////////////////////////////////////////////////////
 
@@ -397,6 +415,8 @@ namespace Learners_Reader
             {
                 this.AbsolutePageNumber = bookScanner.GetAbsolutePageNumber(chapterIndex, pageIndex);
             }
+
+            Logger.Log(book.ReadChapter(chapterIndex));
 
             CurrChapterView.ShowChapter(book.ReadChapter(chapterIndex), (int pageCount) =>
             {

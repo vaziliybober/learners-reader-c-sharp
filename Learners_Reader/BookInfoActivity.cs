@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using Learners_Reader.Epub;
@@ -14,13 +15,14 @@ using Learners_Reader.Utilities;
 
 namespace Learners_Reader
 {
-    [Activity(Label = "BookInfoActivity")]
-    public class BookInfoActivity : Activity
+    [Activity(Label = "Information")]
+    public class BookInfoActivity : AppCompatActivity
     {
         Book book;
 
         TextView titleTextView;
         TextView authorTextView;
+        TextView descriptionTextView;
 
         Button readBookButton;
 
@@ -42,7 +44,10 @@ namespace Learners_Reader
             titleTextView.Text = book.Title;
 
             authorTextView = FindViewById<TextView>(Resource.Id.authorTextView);
-            authorTextView.Text = book.Author;
+            authorTextView.Text = book.Author + $" ({book.Language})";
+
+            descriptionTextView = FindViewById<TextView>(Resource.Id.descriptionTextView);
+            descriptionTextView.Text = book.Description;
         }
 
         private void ConfigureReadBookButton()
